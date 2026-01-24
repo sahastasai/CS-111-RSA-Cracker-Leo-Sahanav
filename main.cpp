@@ -4,34 +4,31 @@
 #include <utility>
 #include <cmath>
 #include <vector>
+#include <optional>
 using namespace std;
+
+int extendedGCD(int a, int b, int &x, int &y); 
+vector<pair<int, int> > factor(int toFactor);
+pair<int, int>* getPrimeFactorization(int toFactor);
+bool isPrime(int toCheck);
+int modInverse(int a, int m);
+int modPow(int base, int exp, int mod);
 int main()
 {
-	string line1;
-	string line2;
+	int e;
+	int n;
+	int m;
 	string line3;
 
-	cin >> line1;
-	cin >> line2;
-	cin >> line3;
+	cin >> e;
+	cin >> n;
+	cin >> m;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	getline(cin, line3);
 
-	stringstream ss1(line1);
-	//stringstream ss2(line2);
 	stringstream ss3(line3);
 	string token;
 	
-	int e = 0;
-	int n = 0;
-	while(ss1 >> token)
-	{
-		if(e){
-			n = stoi(token);
-		}else{
-			e = stoi(token);
-		}
-	}
-
-	int m = stoi(line2);
 
 	vector<int> message;
 	while(ss3 >> token)
@@ -40,25 +37,55 @@ int main()
 	}
 	//Variables loaded and set
 	
-	pair<int, int> pq = getPrimeFactorization(n);
-	int p = pq.first;
-	int q = pq.second;
+	pair<int, int>* pq = getPrimeFactorization(n);
+	if(pq == nullptr)
+	{
+	
+		cout << "Public key is not valid!" << endl;
+		return 1;
+	}
+	int p = pq->first;
+	int q = pq->second;
 	int toMod = (p-1) * (q-1);
 	//Now, we have everything we need to find d.
 	
 	int d = modInverse(e, toMod);
+	if(d < 0)
+	{
+		cout << "Public key is not valid!" << endl;
+		return 1;
+	}
 
+	cout << p << " " << q << " " << toMod << " " << d << endl;
 	//Now to decode...
-	vector<int> decoded;
+	vector<char> decodedChars;
 	for(int i = 0; i < m; i++)
 	{
-		decoded.push_back(pow(message[i], d) % n);
-	}	
+		cout << modPow(message[i], d, n) << " ";
+		decodedChars.push_back(modPow(message[i], d, n));
+	}
+	cout << endl;
+	for(int j = 0; j < m; j++)
+	{
+		cout << decodedChars[j];
+	}
+	cout << endl;
 
+	
 
 
 }
-
+int modPow(int base, int exp, int mod) {
+	int res = 1;
+    base = base % mod;
+    while (exp > 0) {
+        if (exp % 2 == 1)
+   		res = (res * base) % mod;
+        exp /= 2;
+        base = (base * base) % mod;
+    }
+    return res;
+}
 vector<pair<int, int> > factor(int toFactor)
 {
 	int sqr = (int) sqrt(toFactor);
@@ -73,23 +100,24 @@ vector<pair<int, int> > factor(int toFactor)
 	return toReturn;
 }
 
-pair<int, int> getPrimeFactorization(int toFactor)
+pair<int, int>* getPrimeFactorization(int toFactor)
 {
 	vector<pair<int, int> > sairam = factor(toFactor);
 	pair<int, int> current;
 
 	if(sairam.size() == 1)
 	{
-		return sairam[0];
+		return new pair<int, int>(sairam[0].first, sairam[0].second);
 	}
 
 	for(int i = 1; i < sairam.size(); i++)
 	{
 		current = sairam[i];
 		if(isPrime(current.first) && isPrime(current.second)){
-			return current;
+			return new pair<int, int>(current.first, current.second);
 		}
 	}
+	return nullptr; 
 }
 
 bool isPrime(int toCheck)
