@@ -13,6 +13,7 @@ pair<int, int>* getPrimeFactorization(int toFactor);
 bool isPrime(int toCheck);
 int modInverse(int a, int m);
 int modPow(int base, int exp, int mod);
+char decodeChar(int num);
 int main()
 {
 	int e;
@@ -46,7 +47,18 @@ int main()
 	}
 	int p = pq->first;
 	int q = pq->second;
+	if(p == q)
+	{
+	
+		cout << "Public key is not valid!" << endl;
+		return 1;
+	}
 	int toMod = (p-1) * (q-1);
+	if(e < 1 || e > toMod)
+	{
+		cout << "Public key is not valid!" << endl;
+		return 1;
+	}
 	//Now, we have everything we need to find d.
 	
 	int d = modInverse(e, toMod);
@@ -62,11 +74,11 @@ int main()
 	for(int i = 0; i < m; i++)
 	{
 		cout << modPow(message[i], d, n) << " ";
-		decodedChars.push_back(modPow(message[i], d, n));
+		decodedChars.push_back(decodeChar(modPow(message[i], d, n)));
 	}
 	cout << endl;
 	for(int j = 0; j < m; j++)
-	{
+	{		
 		cout << decodedChars[j];
 	}
 	cout << endl;
@@ -76,16 +88,30 @@ int main()
 
 }
 int modPow(int base, int exp, int mod) {
-	int res = 1;
-    base = base % mod;
+	long long  res = 1;
+    long long b = base % mod;
     while (exp > 0) {
         if (exp % 2 == 1)
-   		res = (res * base) % mod;
+   		res = (res * b) % mod;
         exp /= 2;
-        base = (base * base) % mod;
+        b = (b * b) % mod;
     }
-    return res;
+    return (int)res;
 }
+char decodeChar(int num)
+{
+    if(num >= 6 && num <= 26+6)
+        return 'A' + (num - 7);
+    else if(num == 33)
+        return ' ';
+    else if(num == 34)
+        return '"';
+    else if(num == 37)
+        return '\'';
+    else
+        return '?'; // fallback for unexpected values
+}
+
 vector<pair<int, int> > factor(int toFactor)
 {
 	int sqr = (int) sqrt(toFactor);
