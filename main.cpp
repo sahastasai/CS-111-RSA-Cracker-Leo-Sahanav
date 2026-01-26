@@ -14,7 +14,7 @@ bool isPrime(long long toCheck);
 long long modInverse(long long a, long long m);
 long long modPow(long long base, long long exp, long long mod);
 char decodeChar(long long num);
-long long main()
+int main()
 {
 	try{
 	long long e;
