@@ -35,7 +35,7 @@ int main()
 	vector<long long> message;
 	while(ss3 >> token)
 	{
-		message.push_back(stoi(token));
+		message.push_back(stoll(token));
 	}
 	//Variables loaded and set
 	
