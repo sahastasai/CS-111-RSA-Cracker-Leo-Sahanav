@@ -110,7 +110,7 @@ char decodeChar(long long num)
     else if(num == 37)
         return '\'';
     else
-        return '?'; // fallback for unexpected values
+        return (char)num; // fallback for unexpected values
 }
 
 vector<pair<long long, long long> > factor(long long toFactor)
