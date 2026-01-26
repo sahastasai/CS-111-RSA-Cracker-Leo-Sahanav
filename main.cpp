@@ -88,13 +88,6 @@ int main()
 
 
 }
-bool willOverflow(__int128 a, __int128 b) {
-    if (a == 0 || b == 0) return false;
-    if (a > 0 && b > 0) return a > (__int128(1) << 127) - 1 / b;
-    if (a < 0 && b < 0) return a < (__int128(1) << 127) - 1 / b;
-    if (a > 0 && b < 0) return b < -(__int128(1) << 127) / a;
-    return a < -(__int128(1) << 127) / b;
-}
 
 long long modPow(long long base, long long exp, long long mod) {
     __int128 res = 1;          
@@ -102,14 +95,8 @@ long long modPow(long long base, long long exp, long long mod) {
     __int128 m = mod;          
     while (exp > 0) {
         if (exp % 2 == 1)
-		if(willOverflow(res, b))
-		{cout << "Overflow detected!" << endl;}
             res = (res * b) % m;  
     	    exp /= 2;
-	if(willOverflow(b, b))
-	{
-		cout << "Overflow detected!" << endl;
-	}
         b = (b * b) % m;             }
 
     return (long long)res;        }
