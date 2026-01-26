@@ -84,9 +84,11 @@ long long main()
 		cout << decodedChars[j];
 	}
 	cout << endl;
+	return 0;
 	}catch(...)
 	{
 		cerr << "Exception!";
+		return 0;
 	}
 	
 
