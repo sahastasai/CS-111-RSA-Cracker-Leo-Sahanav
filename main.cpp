@@ -16,7 +16,6 @@ long long modPow(long long base, long long exp, long long mod);
 char decodeChar(long long num);
 int main()
 {
-	try{
 	long long e;
 	long long n;
 	long long m;
@@ -85,12 +84,7 @@ int main()
 	}
 	cout << endl;
 	return 0;
-	}catch(...)
-	{
-		cerr << "Exception!";
-		return 0;
-	}
-	
+		
 
 
 }
