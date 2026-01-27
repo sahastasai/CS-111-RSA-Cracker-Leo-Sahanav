@@ -118,7 +118,7 @@ char decodeChar(__int128 num)
 
 vector<pair<__int128, __int128> > factor(__int128 toFactor)
 {
-	__int128 sqr = (__int128) sqrt(toFactor);
+	__int128 sqr = static_cast<__int128>((long long) sqrt(toFactor)); 
 	vector<pair<__int128, __int128> > toReturn;
 	for(__int128 i = 1; i <= sqr; i++)
 	{
