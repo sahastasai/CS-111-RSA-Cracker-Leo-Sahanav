@@ -4,27 +4,30 @@
 #include <utility>
 #include <cmath>
 #include <vector>
+#include <algorithm>
 #include <optional>
 using namespace std;
 
-long long extendedGCD(long long a, long long b, long long &x, long long &y); 
-vector<pair<long long, long long> > factor(long long toFactor);
-pair<long long, long long>* getPrimeFactorization(long long toFactor);
-bool isPrime(long long toCheck);
-long long modInverse(long long a, long long m);
-long long modPow(long long base, long long exp, long long mod);
-char decodeChar(long long num);
+__int128 extendedGCD(__int128 a, __int128 b, __int128 &x, __int128 &y); 
+vector<pair<__int128, __int128> > factor(__int128 toFactor);
+pair<__int128, __int128>* getPrimeFactorization(__int128 toFactor);
+bool isPrime(__int128 toCheck);
+__int128 modInverse(__int128 a, __int128 m);
+__int128 modPow(__int128 base, __int128 exp, __int128 mod);
+char decodeChar(__int128 num);
+istream& operator>>(istream& is, __int128& v);
+ostream& operator<<(ostream& os, const __int128& v);
 int main()
 {
-	long long e;
-	long long n;
-	long long m;
+	__int128 e;
+	__int128 n;
+	__int128 m;
 	string line3;
 
 	cin >> e;
 	cin >> n;
 	cin >> m;
-	vector<long long> message;
+	vector<__int128> message;
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	getline(cin, line3);
 
@@ -38,22 +41,22 @@ int main()
 	}
 	//Variables loaded and set
 	
-	pair<long long, long long>* pq = getPrimeFactorization(n);
+	pair<__int128, __int128>* pq = getPrimeFactorization(n);
 	if(pq == nullptr)
 	{
 	
 		cout << "Public key is not valid!" << endl;
 		return 1;
 	}
-	long long p = pq->first;
-	long long q = pq->second;
+	__int128 p = pq->first;
+	__int128 q = pq->second;
 	if(p == q)
 	{
 	
 		cout << "Public key is not valid!" << endl;
 		return 1;
 	}
-	long long toMod = (p-1) * (q-1);
+	__int128 toMod = (p-1) * (q-1);
 	if(e < 1 || e > toMod)
 	{
 		cout << "Public key is not valid!" << endl;
@@ -61,7 +64,7 @@ int main()
 	}
 	//Now, we have everything we need to find d.
 	
-	long long d = modInverse(e, toMod);
+	__int128 d = modInverse(e, toMod);
 	if(d < 0)
 	{
 		cout << "Public key is not valid!" << endl;
@@ -71,13 +74,13 @@ int main()
 	cout << p << " " << q << " " << toMod << " " << d << endl;
 	//Now to decode...
 	vector<char> decodedChars;
-	for(long long i = 0; i < m; i++)
+	for(__int128 i = 0; i < m; i++)
 	{
 		cout << modPow(message[i], d, n) << " ";
 		decodedChars.push_back(decodeChar(modPow(message[i], d, n)));
 	}
 	cout << endl;
-	for(long long j = 0; j < m; j++)
+	for(__int128 j = 0; j < m; j++)
 	{		
 		cout << decodedChars[j];
 	}
@@ -88,7 +91,7 @@ int main()
 
 }
 
-long long modPow(long long base, long long exp, long long mod) {
+__int128 modPow(__int128 base, __int128 exp, __int128 mod) {
     __int128 res = 1;          
     __int128 b = base % mod;      
     __int128 m = mod;          
@@ -98,9 +101,9 @@ long long modPow(long long base, long long exp, long long mod) {
     	    exp /= 2;
         b = (b * b) % m;             }
 
-    return (long long)res;        }
+    return (__int128)res;        }
 
-char decodeChar(long long num)
+char decodeChar(__int128 num)
 {
     if(num >= 6 && num <= 26+6)
         return 'A' + (num - 7);
@@ -113,11 +116,11 @@ char decodeChar(long long num)
     else
         return (char)(int)num; }
 
-vector<pair<long long, long long> > factor(long long toFactor)
+vector<pair<__int128, __int128> > factor(__int128 toFactor)
 {
-	long long sqr = (long long) sqrt(toFactor);
-	vector<pair<long long, long long> > toReturn;
-	for(long long i = 1; i <= sqr; i++)
+	__int128 sqr = (__int128) sqrt(toFactor);
+	vector<pair<__int128, __int128> > toReturn;
+	for(__int128 i = 1; i <= sqr; i++)
 	{
 		if(!(modPow(toFactor, 1, i)))
 		{
@@ -127,49 +130,81 @@ vector<pair<long long, long long> > factor(long long toFactor)
 	return toReturn;
 }
 
-pair<long long, long long>* getPrimeFactorization(long long toFactor)
+pair<__int128, __int128>* getPrimeFactorization(__int128 toFactor)
 {
-	vector<pair<long long, long long> > sairam = factor(toFactor);
-	pair<long long, long long> current;
+	vector<pair<__int128, __int128> > sairam = factor(toFactor);
+	pair<__int128, __int128> current;
 
 	if(sairam.size() == 1)
 	{
-		return new pair<long long, long long>(sairam[0].first, sairam[0].second);
+		return new pair<__int128, __int128>(sairam[0].first, sairam[0].second);
 	}
 
-	for(long long i = 1; i < sairam.size(); i++)
+	for(__int128 i = 1; i < sairam.size(); i++)
 	{
 		current = sairam[i];
 		if(isPrime(current.first) && isPrime(current.second)){
-			return new pair<long long, long long>(current.first, current.second);
+			return new pair<__int128, __int128>(current.first, current.second);
 		}
 	}
 	return nullptr; 
 }
 
-bool isPrime(long long toCheck)
+bool isPrime(__int128 toCheck)
 {
 	return (factor(toCheck).size() == 1);	
 }
 
-long long extendedGCD(long long a, long long b, long long &x, long long &y) {
+__int128 extendedGCD(__int128 a, __int128 b, __int128 &x, __int128 &y) {
     if (b == 0) {
         x = 1;
         y = 0;
         return a;
     }
 
-    long long x1, y1;
-    long long gcd = extendedGCD(b, a % b, x1, y1);
+    __int128 x1, y1;
+    __int128 gcd = extendedGCD(b, a % b, x1, y1);
 
     x = y1;
     y = x1 - (a / b) * y1;
 
     return gcd;
 }
-long long modInverse(long long a, long long m) {
-    long long x, y;
-    long long g = extendedGCD(a, m, x, y);
+__int128 modInverse(__int128 a, __int128 m) {
+    __int128 x, y;
+    __int128 g = extendedGCD(a, m, x, y);
     if (g != 1) return -1;
     return (x % m + m) % m;
+}
+
+istream& operator>>(istream& is, __int128& v) {
+    string s;
+    is >> s;
+    v = 0;
+    int start = (s[0] == '-') ? 1 : 0;
+    for (size_t i = start; i < s.size(); ++i) {
+        v = v * 10 + (s[i] - '0');
+    }
+    if (s[0] == '-') {
+        v = -v;
+    }
+    return is;
+}
+
+ostream& operator<<(ostream& os, const __int128& v) {
+    if (v == 0) {
+        return os << "0";
+    }
+    __int128 temp = v;
+    if (temp < 0) {
+        os << "-";
+        temp = -temp;
+    }
+    string s;
+    while (temp > 0) {
+        s += (char)((temp % 10) + '0');
+        temp /= 10;
+    }
+    reverse(s.begin(), s.end());
+    return os << s;
 }
