@@ -119,7 +119,7 @@ vector<pair<long long, long long> > factor(long long toFactor)
 	vector<pair<long long, long long> > toReturn;
 	for(long long i = 1; i <= sqr; i++)
 	{
-		if(!(toFactor % i))
+		if(!(modPow(toFactor, 1, i)))
 		{
 			toReturn.push_back(make_pair(i, toFactor/i));
 		}
