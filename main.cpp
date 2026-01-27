@@ -24,7 +24,7 @@ int main()
 	cin >> e;
 	cin >> n;
 	cin >> m;
-
+	vector<long long> message;
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	getline(cin, line3);
 
@@ -32,7 +32,6 @@ int main()
 	string token;
 	
 
-	vector<long long> message;
 	while(ss3 >> token)
 	{
 		message.push_back(stoll(token));
