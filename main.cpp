@@ -157,6 +157,7 @@ char decodeChar(long int num){
 }
 
 vector<pair<long int, long int> > factor(long int toFactor){
+	
 	long int sqr = (long int) sqrt(toFactor);
 
 	vector<pair<long int, long int>> toReturn;
@@ -174,6 +175,7 @@ vector<pair<long int, long int> > factor(long int toFactor){
 }
 
 pair<long int, long int>* getPrimeFactorization(long int toFactor){
+	
 	vector<pair<long int, long int> > sairam = factor(toFactor);
 
 	pair<long int, long int> current;
