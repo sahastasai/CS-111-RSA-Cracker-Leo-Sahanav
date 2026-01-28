@@ -141,17 +141,18 @@ char decodeChar(long int num){
     
 	if(num >= 6 && num <= 26+6)
         return 'A' + (num - 7);
-    else if(num == 33)
-        return ' ';
-    else if(num == 34)
-        return '"';
-	else if(num == 35)
-        return ',';
-	else if(num == 36)
-        return '.';
-    else if(num == 37)
-        return '\'';
-    else
+    else if(num >= 33 && num <= 37){
+		if(num == 33)
+        	return ' ';
+    	else if(num == 34)
+        	return '"';
+		else if(num == 35)
+        	return ',';
+		else if(num == 36)
+        	return '.';
+    	else
+        	return '\'';
+	} else
         return (char)(int)num; 
 	
 }
